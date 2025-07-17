@@ -100,8 +100,7 @@
           freeBikeLayer.clearLayers();
           data.data.bikes.forEach(bike => {
             const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(
-              `<b>Freies Fahrrad</b><br>ID: ${
-                bike.bike_id || 'unbekannt'
+              `<b>Freies Fahrrad</b>'
               }`
             );
             freeBikeLayer.addLayer(marker);
