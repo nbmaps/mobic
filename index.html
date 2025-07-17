@@ -33,23 +33,31 @@
     #toggleFreeBikes { bottom: 100px; right: 10px; }
     #toggleFlexzones { bottom: 140px; right: 10px; }
 
-    .leaflet-control-geocoder {
-      z-index: 1100 !important;
-      background: white;
-      padding: 4px;
-      border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    }
-    .leaflet-control-geocoder-form {
-      display: flex;
-      align-items: center;
-    }
-    .leaflet-control-geocoder-icon {
-      width: 26px;
-      height: 26px;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
+.leaflet-control-geocoder {
+  z-index: 1100 !important;
+  background: white;
+  padding: 6px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  overflow: visible;
+  display: flex;
+  align-items: center;
+}
+
+.leaflet-control-geocoder-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leaflet-control-geocoder-icon {
+  width: 24px;
+  height: 24px;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  flex-shrink: 0;
+}
   </style>
 </head>
 <body>
