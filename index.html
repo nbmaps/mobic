@@ -80,31 +80,7 @@
   <button id="locateMe">📍 Mein Standort</button>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js">
-    const comingIcon = L.icon({
-      iconUrl: 'bike-icon_perhaps.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40]
-    });
-
-    fetch('bscoming.geojson')
-      .then(res => res.json())
-      .then(data => {
-        const comingLayer = L.geoJSON(data, {
-          pointToLayer: (feature, latlng) => L.marker(latlng, { icon: comingIcon }),
-          onEachFeature: (feature, layer) => {
-            const p = feature.properties;
-            const popup = `<b>${p.place_name}</b><br>Status: ${p.status}`;
-            layer.bindPopup(popup);
-            layer.on('mouseover', () => layer.openPopup());
-            layer.on('mouseout', () => layer.closePopup());
-          }
-        });
-        comingLayer.addTo(map);
-      })
-      .catch(err => {
-        console.error('Fehler beim Laden der geplanten Stationen (bscoming.geojson)', err);
-      });
+   
 
 
     const freeBikeIcon = L.icon({
@@ -151,33 +127,7 @@
 
 </script>
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js">
-    const comingIcon = L.icon({
-      iconUrl: 'bike-icon_perhaps.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40]
-    });
-
-    fetch('bscoming.geojson')
-      .then(res => res.json())
-      .then(data => {
-        const comingLayer = L.geoJSON(data, {
-          pointToLayer: (feature, latlng) => L.marker(latlng, { icon: comingIcon }),
-          onEachFeature: (feature, layer) => {
-            const p = feature.properties;
-            const popup = `<b>${p.place_name}</b><br>Status: ${p.status}`;
-            layer.bindPopup(popup);
-            layer.on('mouseover', () => layer.openPopup());
-            layer.on('mouseout', () => layer.closePopup());
-          }
-        });
-        comingLayer.addTo(map);
-      })
-      .catch(err => {
-        console.error('Fehler beim Laden der geplanten Stationen (bscoming.geojson)', err);
-      });
-
-
+    
     const freeBikeIcon = L.icon({
       iconUrl: 'bicon.png',
       iconSize: [30, 30],
@@ -222,33 +172,7 @@
 
 </script>
   <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js">
-    const comingIcon = L.icon({
-      iconUrl: 'bike-icon_perhaps.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40]
-    });
-
-    fetch('bscoming.geojson')
-      .then(res => res.json())
-      .then(data => {
-        const comingLayer = L.geoJSON(data, {
-          pointToLayer: (feature, latlng) => L.marker(latlng, { icon: comingIcon }),
-          onEachFeature: (feature, layer) => {
-            const p = feature.properties;
-            const popup = `<b>${p.place_name}</b><br>Status: ${p.status}`;
-            layer.bindPopup(popup);
-            layer.on('mouseover', () => layer.openPopup());
-            layer.on('mouseout', () => layer.closePopup());
-          }
-        });
-        comingLayer.addTo(map);
-      })
-      .catch(err => {
-        console.error('Fehler beim Laden der geplanten Stationen (bscoming.geojson)', err);
-      });
-
-
+   
     const freeBikeIcon = L.icon({
       iconUrl: 'bicon.png',
       iconSize: [30, 30],
@@ -388,34 +312,7 @@
       });
     };
   
-    const comingIcon = L.icon({
-      iconUrl: 'bike-icon_perhaps.png',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-      popupAnchor: [0, -40]
-    });
-
-    fetch('bscoming.geojson')
-      .then(res => res.json())
-      .then(data => {
-        const comingLayer = L.geoJSON(data, {
-          pointToLayer: (feature, latlng) => L.marker(latlng, { icon: comingIcon }),
-          onEachFeature: (feature, layer) => {
-            const p = feature.properties;
-            const popup = `<b>${p.place_name}</b><br>Status: ${p.status}`;
-            layer.bindPopup(popup);
-            layer.on('mouseover', () => layer.openPopup());
-            layer.on('mouseout', () => layer.closePopup());
-          }
-        });
-        comingLayer.addTo(map);
-      })
-      .catch(err => {
-        console.error('Fehler beim Laden der geplanten Stationen (bscoming.geojson)', err);
-      });
-
-
-    const freeBikeIcon = L.icon({
+       const freeBikeIcon = L.icon({
       iconUrl: 'bicon.png',
       iconSize: [15, 15],
       iconAnchor: [7, 15],
