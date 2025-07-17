@@ -30,6 +30,27 @@
     #locateMe { bottom: 20px; right: 10px; }
     #toggleFreeBikes { bottom: 100px; right: 10px; }
     #toggleFlexzones { bottom: 140px; right: 10px; }
+
+    .leaflet-control-geocoder {
+  z-index: 1100 !important;
+  background: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  overflow: visible;
+}
+
+.leaflet-control-geocoder-form {
+  display: flex;
+  align-items: center;
+}
+
+.leaflet-control-geocoder-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+}
   </style>
 </head>
 <body>
@@ -174,29 +195,34 @@
     let flexzoneVisible = false;
 
     function loadFlexzones() {
-      fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
-        .then(res => res.json())
-        .then(data => {
-          flexzoneLayer.clearLayers();
-          const zones = data.countries.flatMap(country =>
-            country.cities.flatMap(city =>
-              city.flexzones
-                .filter(zone => zone.domain === "re")
-                .map(zone => {
-                  const latlngs = zone.polygons.map(polygon =>
-                    polygon.map(([lat, lon]) => [lat, lon])
-                  );
-                  return L.polygon(latlngs, {
-                    color: "#3388ff",
-                    weight: 2,
-                    fillOpacity: 0.2
-                  }).bindPopup(`<b>${zone.name}</b>`);
-                })
-            )
-          );
-          zones.forEach(zone => flexzoneLayer.addLayer(zone));
+  fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
+    .then(res => res.json())
+    .then(data => {
+      console.log("Flexzonen geladen:", data);
+      flexzoneLayer.clearLayers();
+
+      data.countries.forEach(country => {
+        country.cities.forEach(city => {
+          city.flexzones
+            .filter(zone => zone.domain === "re")
+            .forEach(zone => {
+              zone.polygons.forEach(polygon => {
+                const latlngs = polygon.map(coord => [coord[0], coord[1]]); // eventuell [1], [0] nötig!
+                const poly = L.polygon(latlngs, {
+                  color: "#3388ff",
+                  weight: 2,
+                  fillOpacity: 0.2
+                }).bindPopup(`<b>${zone.name}</b>`);
+                flexzoneLayer.addLayer(poly);
+              });
+            });
         });
-    }
+      });
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Flexzonen:", err);
+    });
+}
 
     loadFlexzones();
 
