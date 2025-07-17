@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Veloleo – Braunschweig (CORS-Bypass)</title>
+  <title>mobic</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png"/>
@@ -118,7 +118,7 @@
     let freeBikeVisible = false;
 
     function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/free_bike_status.json")
+      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
         .then(res => res.json())
         .then(data => {
           freeBikeLayer.clearLayers();
@@ -189,7 +189,7 @@
     let freeBikeVisible = false;
 
     function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/free_bike_status.json")
+      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
         .then(res => res.json())
         .then(data => {
           freeBikeLayer.clearLayers();
@@ -260,7 +260,7 @@
     let freeBikeVisible = false;
 
     function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/free_bike_status.json")
+      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
         .then(res => res.json())
         .then(data => {
           freeBikeLayer.clearLayers();
@@ -294,7 +294,7 @@
 </script>
 
   <script>
-    const map = L.map('map').setView([52.264, 10.526], 13);
+    const map = L.map('map').setView([50.814, 6.773], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
@@ -312,8 +312,8 @@
     let clusteringEnabled = false;
 
     const cors = "https://corsproxy.io/?";
-    const stationInfoUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/station_information.json";
-    const stationStatusUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/station_status.json";
+    const stationInfoUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_information.json";
+    const stationStatusUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_status.json";
 
     Promise.all([
       fetch(stationInfoUrl).then(res => res.json()),
@@ -426,7 +426,7 @@
     let freeBikeVisible = false;
 
     function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_dn/de/free_bike_status.json")
+      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
         .then(res => res.json())
         .then(data => {
           freeBikeLayer.clearLayers();
