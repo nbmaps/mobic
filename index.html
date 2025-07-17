@@ -194,44 +194,40 @@
     let flexzoneVisible = false;
 
     function loadFlexzones() {
-      fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
-        .then(res => res.json())
-        .then(data => {
-          const features = [];
+  fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
+    .then(res => res.json())
+    .then(data => {
+      const features = data?.geojson?.nodeValue?.features || [];
+      
+      // Nur Zonen mit "domain": "re"
+      const filtered = features.filter(f =>
+        f.properties?.domain === "re"
+      );
 
-          data.countries.forEach(country => {
-            country.cities.forEach(city => {
-              city.flexzones.forEach(zone => {
-                if (zone.domain !== "re") return;
+      if (filtered.length === 0) {
+        console.warn("Keine Flexzonen mit domain 're' gefunden.");
+        return;
+      }
 
-                features.push({
-                  type: "Feature",
-                  geometry: zone.geometry,
-                  properties: zone.properties
-                });
-              });
-            });
-          });
+      const geoJsonLayer = L.geoJSON({ type: "FeatureCollection", features: filtered }, {
+        style: feature => ({
+          color: feature.properties.color || "#3388ff",
+          fillColor: feature.properties.fill || "#3388ff",
+          fillOpacity: 0.2,
+          weight: 2
+        }),
+        onEachFeature: (feature, layer) => {
+          layer.bindPopup(`<b>${feature.properties.name}</b>`);
+        }
+      });
 
-          const geoJsonLayer = L.geoJSON({ type: "FeatureCollection", features }, {
-            style: feature => ({
-              color: feature.properties.color || "#3388ff",
-              fillColor: feature.properties.fill || "#3388ff",
-              fillOpacity: 0.2,
-              weight: 2
-            }),
-            onEachFeature: (feature, layer) => {
-              layer.bindPopup(`<b>${feature.properties.name}</b>`);
-            }
-          });
-
-          flexzoneLayer.clearLayers();
-          flexzoneLayer.addLayer(geoJsonLayer);
-        })
-        .catch(err => {
-          console.error("Fehler beim Laden der Flexzonen:", err);
-        });
-    }
+      flexzoneLayer.clearLayers();
+      flexzoneLayer.addLayer(geoJsonLayer);
+    })
+    .catch(err => {
+      console.error("Fehler beim Laden der Flexzonen:", err);
+    });
+}
 
     loadFlexzones();
 
