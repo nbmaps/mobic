@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,25 +5,17 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png"/>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
-
   <style>
     body { margin:0; }
     #map { height:100vh; width:100vw; }
-
     #logo-link {
       position:absolute; top:10px; left:60px; z-index:1000;
       background:white; padding:5px; border-radius:8px;
       box-shadow:0 0 5px rgba(0,0,0,0.2);
     }
-
     #brand-logo { height:50px; width:auto; }
-
-    #toggleCluster, #locateMe {
+    button {
       position: absolute;
       z-index: 1000;
       background: #fff;
@@ -35,183 +26,25 @@
       cursor: pointer;
       font-family: sans-serif;
     }
-
     #toggleCluster { bottom: 60px; right: 10px; }
     #locateMe { bottom: 20px; right: 10px; }
-
-    .leaflet-control-geocoder {
-      z-index: 1100 !important;
-      background: white;
-      padding: 4px;
-      border-radius: 6px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
-    }
-
-    @media (max-width:600px){
-      .leaflet-control-geocoder {
-        margin-top: 60px;
-        max-width: 90%;
-      }
-    }
-  
-#toggleFreeBikes {
-  position: absolute;
-  bottom: 100px;
-  right: 10px;
-  z-index: 1000;
-  background: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 0 4px rgba(0,0,0,0.3);
-  cursor: pointer;
-  font-family: sans-serif;
-}
-
-</style>
+    #toggleFreeBikes { bottom: 100px; right: 10px; }
+    #toggleFlexzones { bottom: 140px; right: 10px; }
+  </style>
 </head>
 <body>
   <div id="map"></div>
-<button id="toggleFreeBikes">Räder ⏻</button>
+  <button id="toggleFreeBikes">Räder ⏻</button>
+  <button id="toggleFlexzones">Flexzonen ⏻</button>
   <a id="logo-link" href="https://www.nextbike.de/mobic/de/" target="_blank" rel="noopener">
     <img id="brand-logo" src="logodomain.png" alt="mobic Logo"/>
   </a>
   <button id="toggleCluster">Cluster einblenden</button>
   <button id="locateMe">📍 Mein Standort</button>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js">
-   
-
-
-    const freeBikeIcon = L.icon({
-      iconUrl: 'bicon.png',
-      iconSize: [30, 30],
-      iconAnchor: [15, 30],
-      popupAnchor: [0, -30]
-    });
-
-    let freeBikeLayer = L.layerGroup();
-    let freeBikeVisible = false;
-
-    function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
-        .then(res => res.json())
-        .then(data => {
-          freeBikeLayer.clearLayers();
-          data.data.bikes.forEach(bike => {
-            const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(
-              `<b>Freies Fahrrad</b>'
-              }`
-            );
-            freeBikeLayer.addLayer(marker);
-          });
-        })
-        .catch(err => {
-          console.error('Fehler beim Laden der freien Räder (free_bike_status)', err);
-        });
-    }
-
-    loadFreeBikes();
-
-    document.getElementById('toggleFreeBikes').onclick = function () {
-      if (freeBikeVisible) {
-        map.removeLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏻';
-      } else {
-        map.addLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏼';
-      }
-      freeBikeVisible = !freeBikeVisible;
-    };
-
-</script>
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js">
-    
-    const freeBikeIcon = L.icon({
-      iconUrl: 'bicon.png',
-      iconSize: [30, 30],
-      iconAnchor: [15, 30],
-      popupAnchor: [0, -30]
-    });
-
-    let freeBikeLayer = L.layerGroup();
-    let freeBikeVisible = false;
-
-    function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
-        .then(res => res.json())
-        .then(data => {
-          freeBikeLayer.clearLayers();
-          data.data.bikes.forEach(bike => {
-            const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(
-  `<b>Freies Fahrrad</b>`
-);
-            freeBikeLayer.addLayer(marker);
-          });
-        })
-        .catch(err => {
-          console.error('Fehler beim Laden der freien Räder (free_bike_status)', err);
-        });
-    }
-
-    loadFreeBikes();
-
-    document.getElementById('toggleFreeBikes').onclick = function () {
-      if (freeBikeVisible) {
-        map.removeLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏻';
-      } else {
-        map.addLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏼';
-      }
-      freeBikeVisible = !freeBikeVisible;
-    };
-
-</script>
-  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js">
-   
-    const freeBikeIcon = L.icon({
-      iconUrl: 'bicon.png',
-      iconSize: [30, 30],
-      iconAnchor: [15, 30],
-      popupAnchor: [0, -30]
-    });
-
-    let freeBikeLayer = L.layerGroup();
-    let freeBikeVisible = false;
-
-    function loadFreeBikes() {
-      fetch("https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/free_bike_status.json")
-        .then(res => res.json())
-        .then(data => {
-          freeBikeLayer.clearLayers();
-          data.data.bikes.forEach(bike => {
-            const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(
-      `<b>Freies Fahrrad</b>`
-        );
-            freeBikeLayer.addLayer(marker);
-          });
-        })
-        .catch(err => {
-          console.error('Fehler beim Laden der freien Räder (free_bike_status)', err);
-        });
-    }
-
-    loadFreeBikes();
-
-    document.getElementById('toggleFreeBikes').onclick = function () {
-      if (freeBikeVisible) {
-        map.removeLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏻';
-      } else {
-        map.addLayer(freeBikeLayer);
-        this.innerText = 'Räder ⏼';
-      }
-      freeBikeVisible = !freeBikeVisible;
-    };
-
-</script>
-
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
   <script>
     const map = L.map('map').setView([50.814, 6.773], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -226,13 +59,19 @@
       popupAnchor: [0, -40]
     });
 
+    const freeBikeIcon = L.icon({
+      iconUrl: 'bicon.png',
+      iconSize: [15, 15],
+      iconAnchor: [7, 15],
+      popupAnchor: [0, -15]
+    });
+
     const markers = L.markerClusterGroup();
     const plainMarkers = L.layerGroup();
     let clusteringEnabled = false;
 
-    const cors = "https://corsproxy.io/?";
-    const stationInfoUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_information.json";
-    const stationStatusUrl = cors + "https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_status.json";
+    const stationInfoUrl = "https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_information.json";
+    const stationStatusUrl = "https://corsproxy.io/?https://gbfs.nextbike.net/maps/gbfs/v2/nextbike_re/de/station_status.json";
 
     Promise.all([
       fetch(stationInfoUrl).then(res => res.json()),
@@ -261,18 +100,12 @@
           const p = feature.properties;
           const popup = `<b>${p.name}</b><br>Stationsnummer: ${p.station_id}<br>Räder: ${p.bikes}`;
           layer.bindPopup(popup);
-          layer.on('mouseover', () => layer.openPopup());
-          layer.on('mouseout', () => layer.closePopup());
         }
       });
 
       markers.addLayer(layer);
       plainMarkers.addLayer(layer);
       map.addLayer(plainMarkers);
-    })
-    .catch(err => {
-      console.error('Fehler beim Laden der Stationsdaten', err);
-      alert('Stationsdaten konnten nicht geladen werden.');
     });
 
     document.getElementById('toggleCluster').onclick = function () {
@@ -306,14 +139,8 @@
         alert("Standort konnte nicht ermittelt werden.");
       });
     };
-  
-       const freeBikeIcon = L.icon({
-      iconUrl: 'bicon.png',
-      iconSize: [15, 15],
-      iconAnchor: [7, 15],
-      popupAnchor: [0, -15]
-    });
 
+    // Freie Räder
     let freeBikeLayer = L.layerGroup();
     let freeBikeVisible = false;
 
@@ -323,14 +150,9 @@
         .then(data => {
           freeBikeLayer.clearLayers();
           data.data.bikes.forEach(bike => {
-            const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(
-  `<b>Freies Fahrrad</b>`
-);
+            const marker = L.marker([bike.lat, bike.lon], { icon: freeBikeIcon }).bindPopup(`<b>Freies Fahrrad</b>`);
             freeBikeLayer.addLayer(marker);
           });
-        })
-        .catch(err => {
-          console.error('Fehler beim Laden der freien Räder (free_bike_status)', err);
         });
     }
 
@@ -347,6 +169,47 @@
       freeBikeVisible = !freeBikeVisible;
     };
 
-</script>
+    // Flexzonen
+    const flexzoneLayer = L.layerGroup();
+    let flexzoneVisible = false;
+
+    function loadFlexzones() {
+      fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
+        .then(res => res.json())
+        .then(data => {
+          flexzoneLayer.clearLayers();
+          const zones = data.countries.flatMap(country =>
+            country.cities.flatMap(city =>
+              city.flexzones
+                .filter(zone => zone.domain === "re")
+                .map(zone => {
+                  const latlngs = zone.polygons.map(polygon =>
+                    polygon.map(([lat, lon]) => [lat, lon])
+                  );
+                  return L.polygon(latlngs, {
+                    color: "#3388ff",
+                    weight: 2,
+                    fillOpacity: 0.2
+                  }).bindPopup(`<b>${zone.name}</b>`);
+                })
+            )
+          );
+          zones.forEach(zone => flexzoneLayer.addLayer(zone));
+        });
+    }
+
+    loadFlexzones();
+
+    document.getElementById('toggleFlexzones').onclick = function () {
+      if (flexzoneVisible) {
+        map.removeLayer(flexzoneLayer);
+        this.innerText = 'Flexzonen ⏻';
+      } else {
+        map.addLayer(flexzoneLayer);
+        this.innerText = 'Flexzonen ⏼';
+      }
+      flexzoneVisible = !flexzoneVisible;
+    };
+  </script>
 </body>
 </html>
