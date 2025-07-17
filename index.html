@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+
   <style>
     body { margin:0; }
     #map { height:100vh; width:100vw; }
@@ -32,25 +34,22 @@
     #toggleFlexzones { bottom: 140px; right: 10px; }
 
     .leaflet-control-geocoder {
-  z-index: 1100 !important;
-  background: white;
-  padding: 6px;
-  border-radius: 6px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
-  overflow: visible;
-}
-
-.leaflet-control-geocoder-form {
-  display: flex;
-  align-items: center;
-}
-
-.leaflet-control-geocoder-icon {
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 24px;
-  height: 24px;
-}
+      z-index: 1100 !important;
+      background: white;
+      padding: 4px;
+      border-radius: 6px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+    .leaflet-control-geocoder-form {
+      display: flex;
+      align-items: center;
+    }
+    .leaflet-control-geocoder-icon {
+      width: 26px;
+      height: 26px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
   </style>
 </head>
 <body>
@@ -195,34 +194,44 @@
     let flexzoneVisible = false;
 
     function loadFlexzones() {
-  fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
-    .then(res => res.json())
-    .then(data => {
-      console.log("Flexzonen geladen:", data);
-      flexzoneLayer.clearLayers();
+      fetch("https://corsproxy.io/?https://api2.nextbike.net/api/v1.1/getFlexzones.json?api_key=zKeYbPSxKi4Xpf0c")
+        .then(res => res.json())
+        .then(data => {
+          const features = [];
 
-      data.countries.forEach(country => {
-        country.cities.forEach(city => {
-          city.flexzones
-            .filter(zone => zone.domain === "re")
-            .forEach(zone => {
-              zone.polygons.forEach(polygon => {
-                const latlngs = polygon.map(coord => [coord[0], coord[1]]); // eventuell [1], [0] nötig!
-                const poly = L.polygon(latlngs, {
-                  color: "#3388ff",
-                  weight: 2,
-                  fillOpacity: 0.2
-                }).bindPopup(`<b>${zone.name}</b>`);
-                flexzoneLayer.addLayer(poly);
+          data.countries.forEach(country => {
+            country.cities.forEach(city => {
+              city.flexzones.forEach(zone => {
+                if (zone.domain !== "re") return;
+
+                features.push({
+                  type: "Feature",
+                  geometry: zone.geometry,
+                  properties: zone.properties
+                });
               });
             });
+          });
+
+          const geoJsonLayer = L.geoJSON({ type: "FeatureCollection", features }, {
+            style: feature => ({
+              color: feature.properties.color || "#3388ff",
+              fillColor: feature.properties.fill || "#3388ff",
+              fillOpacity: 0.2,
+              weight: 2
+            }),
+            onEachFeature: (feature, layer) => {
+              layer.bindPopup(`<b>${feature.properties.name}</b>`);
+            }
+          });
+
+          flexzoneLayer.clearLayers();
+          flexzoneLayer.addLayer(geoJsonLayer);
+        })
+        .catch(err => {
+          console.error("Fehler beim Laden der Flexzonen:", err);
         });
-      });
-    })
-    .catch(err => {
-      console.error("Fehler beim Laden der Flexzonen:", err);
-    });
-}
+    }
 
     loadFlexzones();
 
