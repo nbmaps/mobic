@@ -36,12 +36,10 @@
 .leaflet-control-geocoder {
   z-index: 1100 !important;
   background: white;
-  padding: 6px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  overflow: visible;
-  display: flex;
-  align-items: center;
+  padding: 4px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  max-width: 250px;
 }
 
 .leaflet-control-geocoder-form {
@@ -51,12 +49,20 @@
 }
 
 .leaflet-control-geocoder-icon {
+  flex-shrink: 0;
   width: 24px;
   height: 24px;
-  background-size: 70%;
+  background-size: 16px 16px;
   background-repeat: no-repeat;
   background-position: center;
-  flex-shrink: 0;
+}
+
+.leaflet-control-geocoder input {
+  flex-grow: 1;
+  font-size: 14px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
   </style>
 </head>
